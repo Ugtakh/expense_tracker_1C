@@ -1,8 +1,10 @@
+"use client";
 
 const Dashboard = () => {
-  return (
-    <div>Dashboard</div>
-  )
-}
+	const storedUser = localStorage.getItem("token");
+	console.log("userdata", storedUser);
 
-export default Dashboard
+	return <div>Dashboard</div>;
+};
+
+export default Dashboard;

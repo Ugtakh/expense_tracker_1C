@@ -1,22 +1,46 @@
 "use client";
 
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../context/user-context";
+import axios from "axios";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
 	const router = useRouter();
+
+	// const { userData, setUserData, signUp } = useContext(UserContext);
 	const [userData, setUserData] = useState({
 		name: "",
 		email: "",
 		password: "",
 		repassword: "",
 	});
+	const [image, setImage] = useState(null);
+
+	const handleImageUpload = async () => {
+		if (!image) return;
+		const formData = new FormData();
+		formData.append("file", image);
+		formData.append("upload_preset", "byurziwm");
+
+		try {
+			const response = await axios.post(
+				"https://api.cloudinary.com/v1_1/dgippdeuy/image/upload",
+				formData
+			);
+			return response.data.secure_url;
+		} catch (error) {
+			console.error("Error uploading image:", error);
+		}
+	};
 
 	const signUp = async () => {
+		const imageUrl = await handleImageUpload();
+		if (!imageUrl) return;
+
 		const { name, email, password, repassword } = userData;
 
 		if (password !== repassword) {
@@ -29,11 +53,12 @@ const SignUp = () => {
 				name,
 				email,
 				password,
+				avatarImg: imageUrl,
 			});
 
 			if (response.status === 200) {
 				toast.success("User successfully signed up");
-				router.push("/dashboard");
+				router.push("/login");
 			}
 		} catch (error) {
 			console.error("There was an error signing up:", error);
@@ -77,6 +102,11 @@ const SignUp = () => {
 					onChange={(e) =>
 						setUserData({ ...userData, repassword: e.target.value })
 					}
+				/>
+				<input
+					type="file"
+					onChange={(e) => setImage(e.target.files[0])}
+					className="input input-bordered w-full max-w-xs"
 				/>
 				<button
 					className="btn btn-wide bg-[#0166FF] text-white"

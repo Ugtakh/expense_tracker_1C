@@ -1,10 +1,15 @@
 const sql = require("../config/db");
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+// const cloudinary = require('../config/cloudinary')
+require('dotenv').config();
+
+const secretKey = process.env.SECRET_KEY;
 
 const signUp = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, avatarImg } = req.body;
+    // const uploadedFile = req.file;
     const userExist = await sql`SELECT email FROM users WHERE email=${email}`;
     if (userExist.length > 0) {
       return res.status(400).json({ message: 'User already exist' })
@@ -12,8 +17,13 @@ const signUp = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10)
 
+    // if (!uploadedFile) return res.status(400).json({ message: "No image uploaded!" });
+    // const result = await cloudinary.uploader.upload(uploadedFile.path);
+    // const imageUrl = result.secure_url
+
     await sql`INSERT INTO users(email, name, password, avatarImg, createdAt, updatedAt)
-    VALUES(${email}, ${name}, ${hashedPassword}, 'img', ${new Date()}, ${new Date()});`
+    VALUES(${email}, ${name}, ${hashedPassword}, ${avatarImg}, ${new Date()}, ${new Date()});`
+
     res.status(200).json({ message: 'successfully created user' })
   } catch (error) {
     console.error(error);
@@ -24,19 +34,19 @@ const signUp = async (req, res) => {
 const signIn = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const findUser = await sql`SELECT * FROM users WHERE email=${email}`
-    if (findUser.length === 0) {
+    const [user] = await sql`SELECT * FROM users WHERE email=${email}`
+    if (user.length === 0) {
       return res.status(400).json({ message: 'User does not exist' })
     }
 
-    const checkPassword = bcrypt.compare(password, findUser[0].password)
+    const checkPassword = bcrypt.compare(password, user.password)
     if (!checkPassword) {
       return res.status(400).json({ message: 'Password does not match' })
     }
 
-    // const accessToken = jwt.sign({ userId: findUser[0].id, email: findUser[0].email }, secretKey, { expiresIn: '10h' })
+    const accessToken = jwt.sign({ userId: user.id, email: user.email }, secretKey, { expiresIn: '10h' })
 
-    res.status(201).json({ message: 'successfully logged in' })
+    res.status(200).json({ message: 'successfully logged in', token: accessToken })
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });

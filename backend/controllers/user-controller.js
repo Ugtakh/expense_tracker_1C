@@ -15,12 +15,30 @@ const createUser = async (req, res) => {
   res.status(201).json({ message: "New use created successfully" });
 };
 
-const updateUser = () => { };
-
 const deleteUser = async (req, res) => {
   const { id } = req.params;
   const data = await sql`DELETE FROM employees WHERE eid=${id}`;
   res.status(200).json({ message: "delete success", user: data });
 };
 
-module.exports = { getAllUser, createUser, updateUser, deleteUser };
+const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const [user] = await sql`SELECT name, email, avatarImg FROM users WHERE id=${userId}`
+
+    if (!user || user.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({
+      name: user.name,
+      email: user.email,
+      avatarImg: user.avatarimg,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+
+module.exports = { getAllUser, createUser, deleteUser, getUserProfile };

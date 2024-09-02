@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "../styles/globals.css";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { UserProvider } from "./context/user-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,7 +16,9 @@ export default function RootLayout({ children }) {
     <html lang="en" data-theme="light">
       <body className={inter.className}
       >
-        {children}
+        <UserProvider>
+          {children}
+        </UserProvider>
         <ToastContainer />
       </body>
     </html>
