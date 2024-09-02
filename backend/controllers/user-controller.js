@@ -16,7 +16,16 @@ const createUser = async (req, res) => {
   res.status(201).json({ message: "New use created successfully" });
 };
 
-const updateUser = () => {};
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { email, name, password, profile_img } = req.body;
+  const data = await sql`
+  UPDATE users SET name=${name}, email=${email}, password=${password}
+  WHERE id=${id}
+  `;
+  console.log("DATA", data);
+  res.status(201).json({ message: "New use created successfully" });
+};
 
 const deleteUser = async (req, res) => {
   const { id } = req.params;
