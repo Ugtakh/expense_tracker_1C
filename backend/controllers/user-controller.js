@@ -8,20 +8,18 @@ const getAllUser = async (req, res) => {
 
 const createUser = async (req, res) => {
   const { email, name, password, profile_img } = req.body;
-  const data = await sql`
+  await sql`
   INSERT INTO users (email, name, password, profile_img)
   VALUES(${email}, ${name}, ${password},${profile_img});
   `;
-  console.log("DATA", data);
   res.status(201).json({ message: "New use created successfully" });
 };
 
-const updateUser = () => {};
+const updateUser = () => { };
 
 const deleteUser = async (req, res) => {
   const { id } = req.params;
   const data = await sql`DELETE FROM employees WHERE eid=${id}`;
-  console.log("DATA", data);
   res.status(200).json({ message: "delete success", user: data });
 };
 
