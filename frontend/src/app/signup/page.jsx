@@ -7,6 +7,7 @@ import { UserContext } from "../context/user-context";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { apiUrl } from "../../utils/util";
 
 const SignUp = () => {
 	const router = useRouter();
@@ -49,7 +50,7 @@ const SignUp = () => {
 		}
 
 		try {
-			const response = await axios.post("http://localhost:8008/signup", {
+			const response = await axios.post(`${apiUrl}/signup`, {
 				name,
 				email,
 				password,
@@ -57,7 +58,7 @@ const SignUp = () => {
 			});
 
 			if (response.status === 200) {
-				toast.success("User successfully signed up");
+				toast.success("User successfully signed up", { autoClose: 1000 });
 				router.push("/login");
 			}
 		} catch (error) {

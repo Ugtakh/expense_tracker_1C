@@ -1,7 +1,6 @@
 const sql = require("../config/db");
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-// const cloudinary = require('../config/cloudinary')
 require('dotenv').config();
 
 const secretKey = process.env.SECRET_KEY;
@@ -9,17 +8,12 @@ const secretKey = process.env.SECRET_KEY;
 const signUp = async (req, res) => {
   try {
     const { name, email, password, avatarImg } = req.body;
-    // const uploadedFile = req.file;
     const userExist = await sql`SELECT email FROM users WHERE email=${email}`;
     if (userExist.length > 0) {
       return res.status(400).json({ message: 'User already exist' })
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
-
-    // if (!uploadedFile) return res.status(400).json({ message: "No image uploaded!" });
-    // const result = await cloudinary.uploader.upload(uploadedFile.path);
-    // const imageUrl = result.secure_url
 
     await sql`INSERT INTO users(email, name, password, avatarImg, createdAt, updatedAt)
     VALUES(${email}, ${name}, ${hashedPassword}, ${avatarImg}, ${new Date()}, ${new Date()});`

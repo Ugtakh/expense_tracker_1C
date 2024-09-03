@@ -8,13 +8,25 @@ import { toast } from "react-toastify";
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const router = useRouter();
-  const [userData, setUserData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    repassword: "",
-  });
+  const [user, setUser] = useState({ userId: "", name: "", email: "", avatarImg: "" });
+
+  const fetchUserData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:8008/users/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        setUser(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
 
   // useEffect(() => {
   //   const storedUser = localStorage.getItem("token");
@@ -48,25 +60,25 @@ export const UserProvider = ({ children }) => {
   //   }
   // };
 
-  const logIn = async () => {
-    const { email, password } = userData;
+  // const logIn = async () => {
+  //   const { email, password } = userData;
 
-    try {
-      const response = await axios.post("http://localhost:8008/login", { email, password })
-      if (response.status === 200) {
-        toast.success("User successfully signed in");
-        const { token } = response.data
-        localStorage.setItem('token', token)
-        router.push("/dashboard");
-      }
-    } catch (error) {
-      console.error("There was an error signing in:", error);
-      toast.error("Failed to sign in. Please try again.");
-    }
-  }
+  //   try {
+  //     const response = await axios.post("http://localhost:8008/login", { email, password })
+  //     if (response.status === 200) {
+  //       toast.success("User successfully signed in");
+  //       const { token } = response.data
+  //       localStorage.setItem('token', token)
+  //       router.push("/dashboard");
+  //     }
+  //   } catch (error) {
+  //     console.error("There was an error signing in:", error);
+  //     toast.error("Failed to sign in. Please try again.");
+  //   }
+  // }
 
   return (
-    <UserContext.Provider value={{ userData, setUserData, logIn }}>
+    <UserContext.Provider value={{ user, fetchUserData }}>
       {children}
     </UserContext.Provider>
   );

@@ -1,4 +1,4 @@
-const sql = require('../config/pgDB');
+const sql = require('../config/db');
 
 const createTransaction = async (req, res) => {
   try {
@@ -18,12 +18,12 @@ const getTransactions = async (req, res) => {
   const { userId } = req.params;
   try {
     const transactions =
-      await sql`SELECT transactions.name, transactions.amount, transactions.description, transactions.transactionType, category.name as category_name, category.description as category_description FROM transactions INNER JOIN category ON transactions.categoryId=category.id WHERE transactions.userId=${userId}`;
+      await sql`SELECT transactions.name, transactions.amount, transactions.description, transactions.transactionType, transactions.createdAt, category.name as category_name, category.description as category_description FROM transactions INNER JOIN category ON transactions.categoryId=category.id WHERE transactions.userId=${userId}`;
 
     res.status(200).json({ message: "success", transactions });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "failed to get" });
+    res.status(500).json({ message: "failed to get transactions" });
   }
 }
 
