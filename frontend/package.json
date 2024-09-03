@@ -9,11 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "axios": "^1.7.7",
+    "next": "14.2.6",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.6"
+    "react-toastify": "^10.0.5"
   },
   "devDependencies": {
+    "@types/react": "18.3.5",
+    "daisyui": "^4.12.10",
     "postcss": "^8",
     "tailwindcss": "^3.4.1"
   }
