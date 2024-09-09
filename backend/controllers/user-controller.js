@@ -1,10 +1,14 @@
 const sql = require("../config/db");
 
 const getCurrentUser = async (req, res) => {
-  const { id } = req.user;
-  const [data] = await sql`SELECT * FROM users WHERE id=${id}`;
-
-  res.status(200).json({ message: "success", user: data });
+  try {
+    const { id } = req.user;
+    const [data] = await sql`SELECT * FROM users WHERE id=${id}`;
+    res.status(200).json({ message: "success", user: data });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 };
 
 const getAllUser = async (req, res) => {

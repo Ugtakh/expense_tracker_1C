@@ -1,0 +1,64 @@
+import { PlusIcon, EyeIcon } from "@/icons";
+
+export const SideBar = () => {
+	return (
+		<aside className="flex flex-col w-[250px] bg-white border border-[#E5E7EB] p-5 rounded-xl gap-4">
+			<h1 className="mb-3 font-bold">Records</h1>
+			<button className="btn bg-[#0166FF] text-white btn-sm">
+				<PlusIcon />
+				Add
+			</button>
+			<input
+				type="text"
+				placeholder="search"
+				className="input input-bordered w-full max-w-xs input-sm"
+			/>
+			<div>
+				<h3 className="font-semibold mb-3">Types</h3>
+				<div>
+					<label className="label cursor-pointer">
+						<span className="label-text">All</span>
+						<input
+							type="radio"
+							name="radio-1"
+							className="radio radio-sm checked:bg-black"
+							defaultChecked
+						/>
+					</label>
+				</div>
+				<div>
+					<label className="label cursor-pointer">
+						<span className="label-text">Income</span>
+						<input type="radio" name="radio-1" className="radio radio-sm" />
+					</label>
+				</div>
+				<div>
+					<label className="label cursor-pointer">
+						<span className="label-text">Expense</span>
+						<input type="radio" name="radio-1" className="radio radio-sm" />
+					</label>
+				</div>
+			</div>
+			<div>
+				<div className="mb-3 flex justify-between">
+					<h3 className="font-semibold ">Category</h3>
+					<h4 className="text-xs text-gray-400">Clear</h4>
+				</div>
+				<div>
+					<div className="flex items-center gap-2 mb-2">
+						<EyeIcon />
+						<p>Food & Drinks</p>
+					</div>
+					<div className="flex items-center gap-2 mb-2">
+						<EyeIcon />
+						<p>Shopping</p>
+					</div>
+				</div>
+				<button className="btn btn-ghost btn-sm font-light p-1 mt-3">
+					<PlusIcon color="#0166FF" />
+					Add Category
+				</button>
+			</div>
+		</aside>
+	);
+};
