@@ -51,24 +51,17 @@ export const RecordModal = ({ isOpen, close }) => {
 							className="w-full max-w-xs input input-bordered input-primary"
 						/>
 					</div>
-					{activeTab === "INC" && (
-						<div className="mt-3">
-							<form method="dialog">
-								<button className="btn bg-[#0166FF] text-white">
-									Add Record
-								</button>
-							</form>
-						</div>
-					)}
-					{activeTab === "EXP" && (
-						<div className="mt-3">
-							<form method="dialog">
-								<button className="btn bg-[#16A34A] text-white">
-									Add Record
-								</button>
-							</form>
-						</div>
-					)}
+					<div className="mt-3">
+						<form method="dialog">
+							<button
+								className={`btn ${
+									activeTab === "INC" ? "bg-[#0166FF]" : "bg-[#16A34A]"
+								} text-white`}
+							>
+								Add Record
+							</button>
+						</form>
+					</div>
 				</div>
 			</div>
 		</dialog>
