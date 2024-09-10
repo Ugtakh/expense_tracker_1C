@@ -5,7 +5,6 @@ import { UserContext } from "../../context/user-context";
 import axios from "axios";
 import { apiUrl } from "../../../utils/util";
 import { toast } from "react-toastify";
-
 import { FaArrowAltCircleDown, FaArrowAltCircleUp } from "react-icons/fa";
 import { TbPointFilled } from "react-icons/tb";
 import BarChart from "@/app/components/dashboard/BarChart";
@@ -56,7 +55,6 @@ const Dashboard = () => {
 	console.log("cardInfo", cardInfo);
 	return (
 		<div className="container mx-auto mt-6">
-			<h2>Dashboard</h2>
 			<div className="container grid grid-cols-3 gap-10 ">
 				<div className="relative w-full shadow-xl card bg-base-100">
 					{/* <img src="/images/Large.png" alt="Shoes" /> */}
