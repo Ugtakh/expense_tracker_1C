@@ -1,6 +1,9 @@
+import { DashboardContext } from "@/app/context/dashboard-context";
+import { useContext } from "react";
 import { Bar } from "react-chartjs-2";
 
-const BarChart = ({ barChartData }) => {
+const BarChart = () => {
+  const { bar } = useContext(DashboardContext);
   const data1 = {
     labels: ["Jan", "Feb"],
     datasets: [

@@ -1,6 +1,9 @@
+import { DashboardContext } from "@/app/context/dashboard-context";
+import { useContext } from "react";
 import { Doughnut } from "react-chartjs-2";
 
-const DoughnurChart = ({ categoryData }) => {
+const DoughnurChart = () => {
+  const { donut } = useContext(DashboardContext);
   const data2 = {
     datasets: [
       {
