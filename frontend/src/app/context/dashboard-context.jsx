@@ -26,7 +26,7 @@ export const DashboardProvider = ({ children }) => {
 
   return (
     <DashboardContext.Provider
-      value={{ bar: chartData.bar, dounut: chartData.donut }}
+      value={{ bar: chartData?.bar, dounut: chartData?.donut }}
     >
       {children}
     </DashboardContext.Provider>
