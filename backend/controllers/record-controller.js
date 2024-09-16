@@ -44,4 +44,27 @@ const getChartData = async (req, res) => {
   }
 };
 
-module.exports = { getAllRecord, getInfo, getChartData };
+const createRecord = async (req, res) => {
+  // const { id } = req.user;
+  try {
+    const {
+      name,
+      uid,
+      cid,
+      amount,
+      transaction_type,
+      description,
+      created_at = new Date(),
+    } = req.body;
+    const data = await sql`
+  INSERT INTO records(uid, cid, name, amount, transaction_type, description, created_at)
+  VALUES(${uid}, ${cid}, ${name}, ${amount}, ${transaction_type}, ${description}, ${created_at});
+  `;
+    console.log("DATA", data);
+    res.status(201).json({ message: "New recored created successfully" });
+  } catch (error) {
+    res.status(400).json({ message: "New recored created unsuccessfully" });
+  }
+};
+
+module.exports = { createRecord, getAllRecord, getInfo, getChartData };

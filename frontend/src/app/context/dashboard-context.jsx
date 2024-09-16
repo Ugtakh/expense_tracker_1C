@@ -8,6 +8,18 @@ export const DashboardContext = createContext();
 
 export const DashboardProvider = ({ children }) => {
   const [chartData, setChartData] = useState(null);
+  const [categories, setCategories] = useState(null);
+
+  const getCategories = async () => {
+    try {
+      const res = await axios.get(`${apiUrl}/categories`);
+      console.log("CAT", res.data.categories);
+      setCategories(res.data.categories);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to fetch categories");
+    }
+  };
 
   const getChartData = async () => {
     try {
@@ -16,17 +28,18 @@ export const DashboardProvider = ({ children }) => {
       setChartData({ donut: res.data.donut, bar: res.data.bar });
     } catch (error) {
       console.error(error);
-      toast.error("Failed to fetch transactions");
+      toast.error("Failed to fetch chart data");
     }
   };
 
   useEffect(() => {
     getChartData();
+    getCategories();
   }, []);
 
   return (
     <DashboardContext.Provider
-      value={{ bar: chartData?.bar, dounut: chartData?.donut }}
+      value={{ bar: chartData?.bar, dounut: chartData?.donut, categories }}
     >
       {children}
     </DashboardContext.Provider>
